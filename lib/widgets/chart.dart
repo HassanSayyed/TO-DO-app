@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import '../models/TaskModel.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -34,86 +33,89 @@ class _ChartState extends State<Chart> {
   Widget build(BuildContext context) {
     // 1 third of screen width
     final double screenFactor = (MediaQuery.of(context).size.width / 4);
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          // TDOD fix width
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              width: screenFactor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Total Tasks \n ",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  Text(
-                    ' $tasksCount',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: screenFactor,
-              child: Center(
-                child: new CircularPercentIndicator(
-                  // TODO   fix width for web -relative to containergit
-                  radius: kIsWeb  ? screenFactor /4 :screenFactor * 0.8,
-                  animation: true,
-                  animationDuration: 900,
-                  
-                  lineWidth: 15.0,
-                  percent: tasksDone / tasksCount,
-                  center: new Text(
-                    "Progress",
-                    style: new TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Card(
+          elevation: 6,
+          margin: EdgeInsets.all(20),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              // TDOD fix width
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  width: screenFactor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Total Tasks \n ",
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
+                      ),
+                      Text(
+                        ' $tasksCount',
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
                   ),
-                  circularStrokeCap: CircularStrokeCap.butt,
-                  backgroundColor: Colors.redAccent.shade700,
-                  progressColor: Colors.greenAccent.shade400,
                 ),
-              ),
-            ),
-            Container(
-              width: screenFactor,
-              height: screenFactor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Center(
-                      child: Text(
-                    " Pending  \n  costs",
-                    style: TextStyle(
-                      fontSize: 20,
+                Container(
+                  width: screenFactor,
+                  child: Center(
+                    child: new CircularPercentIndicator(
+                      // TODO   fix width for web -relative to containergit
+                      radius: constraints.maxHeight*0.50,
+                      animation: true,
+                      animationDuration: 900,
+
+                      lineWidth: 15.0,
+                      percent: tasksDone / tasksCount,
+                      center: new Text(
+                        "Progress",
+                        style: new TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                      circularStrokeCap: CircularStrokeCap.butt,
+                      backgroundColor: Colors.redAccent.shade700,
+                      progressColor: Colors.greenAccent.shade400,
                     ),
-                  )),
-                  Countup(
-                    begin: 0,
-                    end: tasksPendingCost,
-                    duration: Duration(seconds: 3),
-                    separator: ',',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                Container(
+                  width: screenFactor,
+                  height: screenFactor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                          child: Text(
+                        " Pending  \n  costs",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      )),
+                      Countup(
+                        begin: 0,
+                        end: tasksPendingCost,
+                        duration: Duration(seconds: 3),
+                        separator: ',',
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
